@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31105.61
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoStore", "src\VideoStore\VideoStore.csproj", "{E65E1D38-9F33-4D2A-B6F3-05B4FD7184D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoStore.Tests", "src\VideoStore.Tests\VideoStore.Tests.csproj", "{187DCCB2-3644-43BA-B94E-A3C80D0EB55B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoStore.Tests", "src\VideoStore.Tests\VideoStore.Tests.csproj", "{5E3840A6-084F-4854-B318-4E0B162E0B2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{E65E1D38-9F33-4D2A-B6F3-05B4FD7184D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E65E1D38-9F33-4D2A-B6F3-05B4FD7184D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E65E1D38-9F33-4D2A-B6F3-05B4FD7184D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{187DCCB2-3644-43BA-B94E-A3C80D0EB55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{187DCCB2-3644-43BA-B94E-A3C80D0EB55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{187DCCB2-3644-43BA-B94E-A3C80D0EB55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{187DCCB2-3644-43BA-B94E-A3C80D0EB55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3840A6-084F-4854-B318-4E0B162E0B2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3840A6-084F-4854-B318-4E0B162E0B2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3840A6-084F-4854-B318-4E0B162E0B2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3840A6-084F-4854-B318-4E0B162E0B2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

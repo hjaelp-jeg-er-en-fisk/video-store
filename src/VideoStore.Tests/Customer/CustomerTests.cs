@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
-using LightInject;
 using NUnit.Framework;
 using VideoStore.Enums;
 using VideoStore.Models;
 using VideoStore.Services;
-using VideoStore.Services.Implement;
 
 namespace VideoStore.Tests.Customer
 {
