@@ -5,28 +5,29 @@ using VideoStore.Enums;
 using VideoStore.Models;
 using VideoStore.Services;
 
-namespace VideoStore.Tests.Customer
+namespace VideoStore.Tests.Rental
 {
     [TestFixture]
-	public class CustomerTests : ContainerFixture
-	{
-        private IRentalService rentalService;
-        private Models.Customer customer;
+    public class RentalTests : ContainerFixture
+    {
+        private IRentalService _rentalService;
+        private Models.Customer _customer;
+        private readonly string _decimalPoint = Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
 
         [SetUp]
         public void Setup()
         {
-            customer = new Models.Customer
+            _customer = new Models.Customer
             {
                 Name = "Fred",
-                Rentals = new List<Rental>()
+                Rentals = new List<Models.Rental>()
             };
         }
 
         [Test]
         public void SingleNewReleaseStatement()
         {
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -36,15 +37,14 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 3
             });
 
-            var rentalRecordForCustomer = rentalService.GetCustomerRentalRecordStatement(customer);
-
-            Assert.AreEqual("Rental Record for Fred\n\tThe Cell\t9\nYou owed 9\nYou earned 2 frequent renter points\n", rentalRecordForCustomer);
+            Assert.AreEqual("Rental Record for Fred\n\tThe Cell\t9\nYou owed 9\nYou earned 2 frequent renter points\n",
+                _rentalService.GetCustomerRentalRecordStatement(_customer));
         }
 
         [Test]
         public void DualNewReleaseStatement()
         {
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -54,7 +54,7 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 3
             });
 
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -64,15 +64,14 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 3
             });
 
-            var rentalRecordForCustomer = rentalService.GetCustomerRentalRecordStatement(customer);
-
-            Assert.AreEqual("Rental Record for Fred\n\tThe Cell\t9\n\tThe Tigger Movie\t9\nYou owed 18\nYou earned 4 frequent renter points\n", rentalRecordForCustomer);
+            Assert.AreEqual("Rental Record for Fred\n\tThe Cell\t9\n\tThe Tigger Movie\t9\nYou owed 18\nYou earned 4 frequent renter points\n",
+                _rentalService.GetCustomerRentalRecordStatement(_customer));
         }
 
         [Test]
-        public void SingleChildrensStatement()
+        public void SingleChildrenStatement()
         {
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -82,16 +81,14 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 3
             });
 
-            var rentalRecordForCustomer = rentalService.GetCustomerRentalRecordStatement(customer);
-
-            var numberFormatNumberDecimalSeparator = Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
-            Assert.AreEqual($"Rental Record for Fred\n\tThe Tigger Movie\t1{numberFormatNumberDecimalSeparator}5\nYou owed 1{numberFormatNumberDecimalSeparator}5\nYou earned 1 frequent renter points\n", rentalRecordForCustomer);
+            Assert.AreEqual($"Rental Record for Fred\n\tThe Tigger Movie\t1{_decimalPoint}5\nYou owed 1{_decimalPoint}5\nYou earned 1 frequent renter points\n",
+                _rentalService.GetCustomerRentalRecordStatement(_customer));
         }
 
         [Test]
         public void MultipleRegularStatement()
         {
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -101,7 +98,7 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 1
             });
 
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -111,7 +108,7 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 2
             });
 
-            customer.Rentals.Add(new Rental
+            _customer.Rentals.Add(new Models.Rental
             {
                 Movie = new Movie
                 {
@@ -121,11 +118,8 @@ namespace VideoStore.Tests.Customer
                 DaysRented = 3
             });
 
-            var rentalRecordForCustomer = rentalService.GetCustomerRentalRecordStatement(customer);
-
-            var numberFormatNumberDecimalSeparator = Thread.CurrentThread.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
-
-            Assert.AreEqual($"Rental Record for Fred\n\tPlan 9 from Outer Space\t2\n\t8 1/2\t2\n\tEraserhead\t3{numberFormatNumberDecimalSeparator}5\nYou owed 7{numberFormatNumberDecimalSeparator}5\nYou earned 3 frequent renter points\n", rentalRecordForCustomer);
+            Assert.AreEqual($"Rental Record for Fred\n\tPlan 9 from Outer Space\t2\n\t8 1/2\t2\n\tEraserhead\t3{_decimalPoint}5\nYou owed 7{_decimalPoint}5\nYou earned 3 frequent renter points\n",
+                _rentalService.GetCustomerRentalRecordStatement(_customer));
         }
 
     }

@@ -50,12 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DependencyRegistry.cs" />
     <Compile Include="Enums\PriceCode.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Rental.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IFrequentRenterPointsService.cs" />
+    <Compile Include="Services\Implement\FrequentRenterPointsService.cs" />
+    <Compile Include="Services\Implement\PriceCalculatorService.cs" />
     <Compile Include="Services\Implement\RentalService.cs" />
+    <Compile Include="Services\IPriceCalculatorService.cs" />
     <Compile Include="Services\IRentalService.cs" />
   </ItemGroup>
   <ItemGroup>

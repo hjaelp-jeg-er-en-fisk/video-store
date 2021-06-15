@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using LightInject;
 using VideoStore.Enums;
 using VideoStore.Models;
 
@@ -7,66 +8,43 @@ namespace VideoStore.Services.Implement
 {
     public class RentalService : IRentalService
     {
+        private readonly IPriceCalculatorService _priceCalculatorService;
+        private readonly IFrequentRenterPointsService _frequentRenterPointService;
+
+        public RentalService(IPriceCalculatorService priceCalculatorService, IFrequentRenterPointsService frequentRenterPointService)
+        {
+            _priceCalculatorService = priceCalculatorService ?? throw new ArgumentNullException(nameof(priceCalculatorService));
+            _frequentRenterPointService = frequentRenterPointService ?? throw new ArgumentNullException(nameof(frequentRenterPointService));
+        }
+
         public string GetCustomerRentalRecordStatement(Customer customer)
         {
-            // Quick and dirty
+            // Quick and dirty error handling
             if (customer == null || string.IsNullOrWhiteSpace(customer.Name) || customer.Rentals == null || !customer.Rentals.Any())
                 throw new ArgumentException("Customer data missing");
 
+            var rentals = "";
             var frequentRenterPoints = 0D;
             var totalAmount = 0D;
-            var rentals = "";
 
             foreach (var rental in customer.Rentals)
             {
-                var rentalPrice = GetRentalPriceFromPriceCode(rental.Movie.PriceCode, rental.DaysRented);
+                //Get rental price based on price code and rent days
+                var rentalPrice = _priceCalculatorService.GetSingleRentalPrice(rental.Movie.PriceCode, rental.DaysRented);
+
+                //Update amounts & rental string
                 rentals += $"\t{rental.Movie.Title}\t{rentalPrice.ToString(System.Globalization.CultureInfo.InvariantCulture)}\n";
+                frequentRenterPoints += _frequentRenterPointService.GetSingleRentalFrequentRenterPoints(rental.Movie.PriceCode, rental.DaysRented);
                 totalAmount += rentalPrice;
-                frequentRenterPoints += GetFrequentRenterPointsFromRental(rental.Movie.PriceCode, rental.DaysRented);
             }
 
+            //Build return statement
             string result = $"Rental Record for {customer.Name}\n"
                             + rentals
                             + $"You owed {totalAmount.ToString(System.Globalization.CultureInfo.InvariantCulture)}\n"
                             + $"You earned {frequentRenterPoints.ToString(System.Globalization.CultureInfo.InvariantCulture)} frequent renter points\n";
 
             return result;
-        }
-
-        private double GetRentalPriceFromPriceCode(PriceCode code, int daysRented)
-        {
-            var rentalAmount = 0D;
-
-            switch (code)
-            {
-                case PriceCode.Regular:
-                    rentalAmount += 2;
-                    if (daysRented > 2)
-                        rentalAmount += (daysRented - 2) * 1.5;
-                    break;
-
-                case PriceCode.NewRelease:
-                    rentalAmount += daysRented * 3;
-                    break;
-
-                case PriceCode.Children:
-                    rentalAmount += 1.5;
-                    if (daysRented > 3)
-                        rentalAmount += (daysRented - 3) * 1.5;
-                    break;
-            }
-
-            return rentalAmount;
-        }
-
-        private double GetFrequentRenterPointsFromRental(PriceCode code, int daysRented)
-        {
-            var frequentRenterPoints = 1;
-
-            if (code == PriceCode.NewRelease)
-                frequentRenterPoints++;
-
-            return frequentRenterPoints;
         }
     }
 }
