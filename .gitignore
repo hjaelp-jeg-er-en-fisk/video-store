@@ -1,0 +1,13 @@
+/.nuget/
+/.vs/
+/packages/
+
+bin/
+obj/
+
+*.log
+*.orig
+*.suo
+*.swp
+*.user
+*.zip
